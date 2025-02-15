@@ -8,7 +8,7 @@ const baseItemSchema = z.object({
   image: z.string(),
 })
 
-const itemRealEstateSchema = baseItemSchema.extend({
+const itemRealEstateSchema = z.object({
   type: z.literal('Недвижимость'),
   propertyType: z.string(),
   area: z.number(),
@@ -16,7 +16,7 @@ const itemRealEstateSchema = baseItemSchema.extend({
   price: z.number(),
 })
 
-const itemAutoSchema = baseItemSchema.extend({
+const itemAutoSchema = z.object({
   type: z.literal('Авто'),
   brand: z.string(),
   model: z.string(),
@@ -24,7 +24,7 @@ const itemAutoSchema = baseItemSchema.extend({
   mileage: z.number(),
 })
 
-const itemServiceSchema = baseItemSchema.extend({
+const itemServiceSchema = z.object({
   type: z.literal('Услуги'),
   serviceType: z.string(),
   experience: z.number(),
@@ -32,7 +32,10 @@ const itemServiceSchema = baseItemSchema.extend({
   workSchedule: z.string(),
 })
 
-export const inputItemSchema = z.union([itemRealEstateSchema, itemAutoSchema, itemServiceSchema])
+export const itemMetaSchema = z.union([itemRealEstateSchema, itemAutoSchema, itemServiceSchema])
+export type ItemMeta = z.infer<typeof itemMetaSchema>
+
+export const inputItemSchema = baseItemSchema.and(itemMetaSchema)
 export type InputItem = z.infer<typeof inputItemSchema>
 
 export const itemSchema = inputItemSchema.and(z.object({ id: z.number() }))
