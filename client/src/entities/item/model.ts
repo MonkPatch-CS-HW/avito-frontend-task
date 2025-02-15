@@ -32,6 +32,8 @@ const itemServiceSchema = baseItemSchema.extend({
   workSchedule: z.string(),
 })
 
-export const itemSchema = z.union([itemRealEstateSchema, itemAutoSchema, itemServiceSchema])
+export const inputItemSchema = z.union([itemRealEstateSchema, itemAutoSchema, itemServiceSchema])
+export type InputItem = z.infer<typeof inputItemSchema>
 
+export const itemSchema = inputItemSchema.and(z.object({ id: z.number() }))
 export type Item = z.infer<typeof itemSchema>
