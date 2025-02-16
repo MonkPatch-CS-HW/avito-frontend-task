@@ -1,5 +1,11 @@
 import { z } from 'zod'
 
+export enum ItemType {
+  REAL_ESTATE = 'Недвижимость',
+  AUTO = 'Авто',
+  SERVICES = 'Услуги',
+}
+
 const baseItemSchema = z.object({
   name: z.string(),
   description: z.string(),
@@ -8,35 +14,37 @@ const baseItemSchema = z.object({
   image: z.string(),
 })
 
-const itemRealEstateSchema = z.object({
-  type: z.literal('Недвижимость'),
-  propertyType: z.string(),
-  area: z.number(),
-  rooms: z.number(),
-  price: z.number(),
-})
+const itemMetaSchema = {
+  [ItemType.REAL_ESTATE]: z.object({
+    propertyType: z.string(),
+    area: z.number(),
+    rooms: z.number(),
+    price: z.number(),
+  }),
+  [ItemType.AUTO]: z.object({
+    brand: z.string(),
+    model: z.string(),
+    year: z.string(),
+    mileage: z.number(),
+  }),
+  [ItemType.SERVICES]: z.object({
+    serviceType: z.string(),
+    experience: z.number(),
+    cost: z.number(),
+    workSchedule: z.string(),
+  }),
+}
 
-const itemAutoSchema = z.object({
-  type: z.literal('Авто'),
-  brand: z.string(),
-  model: z.string(),
-  year: z.string(),
-  mileage: z.number(),
-})
+export type ItemMeta<T extends ItemType> = z.infer<(typeof itemMetaSchema)[T]>
 
-const itemServiceSchema = z.object({
-  type: z.literal('Услуги'),
-  serviceType: z.string(),
-  experience: z.number(),
-  cost: z.number(),
-  workSchedule: z.string(),
-})
-
-export const itemMetaSchema = z.union([itemRealEstateSchema, itemAutoSchema, itemServiceSchema])
-export type ItemMeta = z.infer<typeof itemMetaSchema>
-
-export const inputItemSchema = baseItemSchema.and(itemMetaSchema)
+export const inputItemSchema = z.discriminatedUnion('type', [
+  baseItemSchema.extend({ type: z.literal(ItemType.REAL_ESTATE) }).merge(itemMetaSchema[ItemType.REAL_ESTATE]),
+  baseItemSchema.extend({ type: z.literal(ItemType.AUTO) }).merge(itemMetaSchema[ItemType.AUTO]),
+  baseItemSchema.extend({ type: z.literal(ItemType.SERVICES) }).merge(itemMetaSchema[ItemType.SERVICES]),
+])
 export type InputItem = z.infer<typeof inputItemSchema>
+
+export type PartialInputItem = Partial<InputItem>
 
 export const itemSchema = inputItemSchema.and(z.object({ id: z.number() }))
 export type Item = z.infer<typeof itemSchema>
