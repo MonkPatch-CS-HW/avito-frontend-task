@@ -2,7 +2,7 @@ import { BaseItem, InputItem, ItemMeta } from '@/entities/item'
 import { EditItemGeneral } from '@/features/edit-item-general'
 import { EditItemSpecific } from '@/features/edit-item-specific'
 import { ViewOnChangeEvent, ViewProps } from '@/shared/ui'
-import { Button } from 'antd'
+import { Button, Space } from 'antd'
 import { useState } from 'react'
 
 export const ItemForm = <T extends InputItem>(props: ViewProps<T> & { onSubmit: (item: T) => void }) => {
@@ -44,9 +44,16 @@ export const ItemForm = <T extends InputItem>(props: ViewProps<T> & { onSubmit: 
     BASE: (
       <>
         <EditItemGeneral data={baseItemInfo.data} onChange={handleBaseItemChange} />
-        <Button variant="solid" color="primary" disabled={!baseItemInfo.isValid} onClick={() => setCurrentStep('META')}>
-          Дальше
-        </Button>
+        <Space>
+          <Button
+            variant="solid"
+            color="primary"
+            disabled={!baseItemInfo.isValid}
+            onClick={() => setCurrentStep('META')}
+          >
+            Дальше
+          </Button>
+        </Space>
       </>
     ),
     META: (
@@ -56,12 +63,14 @@ export const ItemForm = <T extends InputItem>(props: ViewProps<T> & { onSubmit: 
           data={itemMetaInfo.data}
           onChange={handleItemMetaChange}
         />
-        <Button variant="solid" color="primary" disabled={!itemMetaInfo.isValid} onClick={handleSubmit}>
-          Завершить
-        </Button>
-        <Button variant="outlined" color="default" onClick={() => setCurrentStep('BASE')}>
-          Назад
-        </Button>
+        <Space>
+          <Button variant="outlined" color="default" onClick={() => setCurrentStep('BASE')}>
+            Назад
+          </Button>
+          <Button variant="solid" color="primary" disabled={!itemMetaInfo.isValid} onClick={handleSubmit}>
+            Завершить
+          </Button>
+        </Space>
       </>
     ),
   }
