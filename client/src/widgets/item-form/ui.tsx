@@ -5,7 +5,7 @@ import { ViewOnChangeEvent, ViewProps } from '@/shared/ui'
 import { Button } from 'antd'
 import { useState } from 'react'
 
-export const ItemForm = <T extends InputItem>(props: ViewProps<T>) => {
+export const ItemForm = <T extends InputItem>(props: ViewProps<T> & { onSubmit: (item: T) => void }) => {
   const [baseItemInfo, setBaseItemInfo] = useState<ViewOnChangeEvent<BaseItem>>({
     isValid: false,
     data: props.data ? { ...props.data } : {},
@@ -32,6 +32,14 @@ export const ItemForm = <T extends InputItem>(props: ViewProps<T>) => {
     })
   }
 
+  const handleSubmit = () => {
+    props.onSubmit?.({
+      ...props.data,
+      ...baseItemInfo.data,
+      ...itemMetaInfo.data,
+    } as T)
+  }
+
   const Steps = {
     BASE: (
       <>
@@ -48,12 +56,7 @@ export const ItemForm = <T extends InputItem>(props: ViewProps<T>) => {
           data={itemMetaInfo.data}
           onChange={handleItemMetaChange}
         />
-        <Button
-          variant="solid"
-          color="primary"
-          disabled={!itemMetaInfo.isValid}
-          onClick={() => props.onChange?.({ ...baseItemInfo, ...itemMetaInfo })}
-        >
+        <Button variant="solid" color="primary" disabled={!itemMetaInfo.isValid} onClick={handleSubmit}>
           Завершить
         </Button>
         <Button variant="outlined" color="default" onClick={() => setCurrentStep('BASE')}>
