@@ -19,19 +19,19 @@ export type BaseItem = z.infer<typeof baseItemSchema>
 export const itemMetaSchema = {
   [ItemType.REAL_ESTATE]: z.object({
     propertyType: z.string().describe('Тип недвижимости'),
-    area: z.number().describe('Площадь'),
-    rooms: z.number().describe('Количество комнат'),
-    price: z.number().describe('Цена'),
+    area: z.number({ message: 'Площадь не должна быть пустой' }).describe('Площадь'),
+    rooms: z.number({ message: 'Количество комнат не должно быть пустым' }).describe('Количество комнат'),
+    price: z.number({ message: 'Цена не должна быть пустой' }).describe('Цена'),
   }),
   [ItemType.AUTO]: z.object({
     brand: z.string().describe('Производитель'),
     model: z.string().describe('Модель'),
-    year: z.number().describe('Год'),
-    mileage: z.number().describe('Пробег'),
+    year: z.number({ message: 'Год не должен быть пустым' }).describe('Год'),
+    mileage: z.number({ message: 'Пробег не должен быть пустым' }).describe('Пробег'),
   }),
   [ItemType.SERVICES]: z.object({
     serviceType: z.string().describe('Тип услуги'),
-    experience: z.number().describe('Опыт работы'),
+    experience: z.number({ message: 'Опыт не должен быть пустым' }).describe('Опыт работы'),
     cost: z.number().describe('Стоимость'),
     workSchedule: z.string().describe('График'),
   }),
