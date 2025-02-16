@@ -31,7 +31,7 @@ export const itemMetaSchema = {
   }),
   [ItemType.SERVICES]: z.object({
     serviceType: z.string().describe('Тип услуги'),
-    experience: z.number().describe('Опыт работф'),
+    experience: z.number().describe('Опыт работы'),
     cost: z.number().describe('Стоимость'),
     workSchedule: z.string().describe('График'),
   }),

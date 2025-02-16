@@ -46,7 +46,7 @@ const EditItemSpecificRealEstate = (props: ViewProps<ItemMeta<ItemType.REAL_ESTA
 const EditItemSpecificServices = (props: ViewProps<ItemMeta<ItemType.SERVICES>>): ReactNode => {
   const serviceTypes = [{ value: 'Уборка' }, { value: 'Стройка' }]
   return (
-    <ZodForm schema={itemMetaSchema[ItemType.REAL_ESTATE]} {...props}>
+    <ZodForm schema={itemMetaSchema[ItemType.SERVICES]} {...props}>
       <ZodForm.Item name="serviceType">
         <Select options={serviceTypes} popupMatchSelectWidth={false} />
       </ZodForm.Item>
