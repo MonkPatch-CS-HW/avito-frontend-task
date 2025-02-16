@@ -3,9 +3,11 @@ import { ReactNode, useContext } from 'react'
 import { AnyZodObject, ZodOptional } from 'zod'
 import { ZodFormContext } from './ZodFormContext'
 
+export type ViewOnChangeEvent<T extends Object> = { data: Partial<T>; isValid: boolean }
+
 export type ViewProps<T extends Object> = {
   data?: Partial<T>
-  onChange?: (event: { data: Partial<T>; isValid: boolean }) => void
+  onChange?: (event: ViewOnChangeEvent<T>) => void
 }
 
 export const ZodForm = <T extends Object, S extends AnyZodObject>(

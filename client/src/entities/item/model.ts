@@ -18,22 +18,22 @@ export type BaseItem = z.infer<typeof baseItemSchema>
 
 export const itemMetaSchema = {
   [ItemType.REAL_ESTATE]: z.object({
-    propertyType: z.string(),
-    area: z.number(),
-    rooms: z.number(),
-    price: z.number(),
+    propertyType: z.string().describe('Тип недвижимости'),
+    area: z.number().describe('Площадь'),
+    rooms: z.number().describe('Количество комнат'),
+    price: z.number().describe('Цена'),
   }),
   [ItemType.AUTO]: z.object({
-    brand: z.string(),
-    model: z.string(),
-    year: z.number(),
-    mileage: z.number(),
+    brand: z.string().describe('Производитель'),
+    model: z.string().describe('Модель'),
+    year: z.number().describe('Год'),
+    mileage: z.number().describe('Пробег'),
   }),
   [ItemType.SERVICES]: z.object({
-    serviceType: z.string(),
-    experience: z.number(),
-    cost: z.number(),
-    workSchedule: z.string(),
+    serviceType: z.string().describe('Тип услуги'),
+    experience: z.number().describe('Опыт работф'),
+    cost: z.number().describe('Стоимость'),
+    workSchedule: z.string().describe('График'),
   }),
 }
 

@@ -1,25 +1,25 @@
-import { InputItem } from '@/entities/item'
+import { BaseItem, InputItem, ItemMeta } from '@/entities/item'
 import { EditItemGeneral } from '@/features/edit-item-general'
+import { EditItemSpecific } from '@/features/edit-item-specific'
+import { ViewOnChangeEvent, ViewProps } from '@/shared/ui'
 import { useState } from 'react'
 
-export type ItemFormProps<T extends InputItem> = {
-  item?: T
-  onSubmit?: (item: T) => void
-}
-
-export const ItemForm = <T extends InputItem>(props: ItemFormProps<T>) => {
-  const [item, setItem] = useState<Partial<InputItem>>(props.item ?? {})
-  const [isValid, setIsValid] = useState<boolean>(false)
-
-  const handleChange = ({ data, isValid }: { data: Partial<InputItem>; isValid: boolean }) => {
-    setItem(data)
-    setIsValid(isValid)
-  }
+export const ItemForm = <T extends InputItem>(props: ViewProps<T>) => {
+  const [baseItemInfo, setBaseItemInfo] = useState<ViewOnChangeEvent<BaseItem>>({
+    isValid: false,
+    data: props.data ?? {},
+  })
+  const [itemMetaInfo, setItemMetaInfo] = useState<ViewOnChangeEvent<ItemMeta<any>>>({
+    isValid: false,
+    data: props.data ?? {},
+  })
 
   return (
     <>
-      <EditItemGeneral data={item} onChange={handleChange} />
-      {isValid && <button>Submit</button>}
+      <EditItemGeneral data={baseItemInfo.data} onChange={setBaseItemInfo} />
+      {baseItemInfo.data.type && (
+        <EditItemSpecific<any> itemType={baseItemInfo.data.type} data={itemMetaInfo.data} onChange={setItemMetaInfo} />
+      )}
     </>
   )
 }
