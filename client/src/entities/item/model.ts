@@ -27,13 +27,13 @@ export const itemMetaSchema = {
     brand: z.string().describe('Производитель'),
     model: z.string().describe('Модель'),
     year: z.number({ message: 'Год не должен быть пустым' }).describe('Год'),
-    mileage: z.number({ message: 'Пробег не должен быть пустым' }).describe('Пробег'),
+    mileage: z.number({ message: 'Пробег не должен быть пустым' }).describe('Пробег').optional(),
   }),
   [ItemType.SERVICES]: z.object({
     serviceType: z.string().describe('Тип услуги'),
     experience: z.number({ message: 'Опыт не должен быть пустым' }).describe('Опыт работы'),
     cost: z.number().describe('Стоимость'),
-    workSchedule: z.string().describe('График'),
+    workSchedule: z.string().describe('График').optional(),
   }),
 }
 
