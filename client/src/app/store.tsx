@@ -1,9 +1,9 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit'
+import { api } from '@/shared/api'
+import { configureStore } from '@reduxjs/toolkit'
 
-export const emptySlice = createSlice({
-  initialState: {},
-  name: 'empty',
-  reducers: {},
+export const store = configureStore({
+  reducer: {
+    [api.reducerPath]: api.reducer,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(api.middleware),
 })
-
-export const store = configureStore({ reducer: emptySlice.reducer })

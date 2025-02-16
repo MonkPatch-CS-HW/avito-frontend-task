@@ -1,9 +1,9 @@
-import { api } from '../../shared/api/api'
-import { InputItem, Item } from './model'
+import { api } from '@/shared/api'
+import { type InputItem, type Item } from './model'
 
 export const itemsApi = api.enhanceEndpoints({ addTagTypes: ['Item'] }).injectEndpoints({
   endpoints: (build) => ({
-    getItems: build.query({ query: () => 'items', providesTags: ['Item'] }),
+    getItems: build.query<Item[], void>({ query: () => 'items', providesTags: ['Item'] }),
     getItemById: build.query({
       query: (id: number) => `items/${id}`,
       providesTags: (_result, _error, arg) => [{ type: 'Item', id: arg }],
