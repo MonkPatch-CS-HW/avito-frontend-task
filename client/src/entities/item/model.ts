@@ -37,14 +37,15 @@ const itemMetaSchema = {
 
 export type ItemMeta<T extends ItemType> = z.infer<(typeof itemMetaSchema)[T]>
 
+const inputItemSchemaSpecific = (itemType: ItemType) =>
+  baseItemSchema.extend({ type: z.literal(itemType) }).merge(itemMetaSchema[itemType])
+
 export const inputItemSchema = z.discriminatedUnion('type', [
-  baseItemSchema.extend({ type: z.literal(ItemType.REAL_ESTATE) }).merge(itemMetaSchema[ItemType.REAL_ESTATE]),
-  baseItemSchema.extend({ type: z.literal(ItemType.AUTO) }).merge(itemMetaSchema[ItemType.AUTO]),
-  baseItemSchema.extend({ type: z.literal(ItemType.SERVICES) }).merge(itemMetaSchema[ItemType.SERVICES]),
+  inputItemSchemaSpecific(ItemType.REAL_ESTATE),
+  inputItemSchemaSpecific(ItemType.AUTO),
+  inputItemSchemaSpecific(ItemType.SERVICES),
 ])
 export type InputItem = z.infer<typeof inputItemSchema>
-
-export type PartialInputItem = Partial<InputItem>
 
 export const itemSchema = inputItemSchema.and(z.object({ id: z.number() }))
 export type Item = z.infer<typeof itemSchema>
