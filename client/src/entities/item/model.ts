@@ -6,15 +6,17 @@ export enum ItemType {
   SERVICES = 'Услуги',
 }
 
-const baseItemSchema = z.object({
-  name: z.string(),
-  description: z.string(),
-  location: z.string(),
-  type: z.string(),
-  image: z.string(),
+export const baseItemSchema = z.object({
+  name: z.string().nonempty('Название не должно быть пустым'),
+  description: z.string().nonempty('Описание не должно быть пустым'),
+  location: z.string().nonempty('Расположение не должно быть пустым'),
+  type: z.string().nonempty('Тип не должен быть пустым'),
+  image: z.string().optional(),
 })
 
-const itemMetaSchema = {
+export type BaseItem = z.infer<typeof baseItemSchema>
+
+export const itemMetaSchema = {
   [ItemType.REAL_ESTATE]: z.object({
     propertyType: z.string(),
     area: z.number(),
@@ -24,7 +26,7 @@ const itemMetaSchema = {
   [ItemType.AUTO]: z.object({
     brand: z.string(),
     model: z.string(),
-    year: z.string(),
+    year: z.number(),
     mileage: z.number(),
   }),
   [ItemType.SERVICES]: z.object({

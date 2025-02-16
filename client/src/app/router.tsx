@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { navigationMap } from '@/shared/model'
-import { ItemMetaInput } from '@/entities/item'
-import { ItemType } from '@/entities/item/model'
+import { FormPage } from '@/pages/form'
 
 export const Router = () => {
   const location = useLocation()
@@ -9,8 +8,8 @@ export const Router = () => {
   return (
     <Routes location={location}>
       <Route index element={<Navigate to={navigationMap.list} />} />
-      <Route path={navigationMap.list} element={<ItemMetaInput itemType={ItemType.AUTO} meta={{}} />} />
-      <Route path={navigationMap.form} element={<span>Form</span>} />
+      <Route path={navigationMap.list} element={<div>List</div>} />
+      <Route path={navigationMap.form} element={<FormPage />} />
       <Route path={navigationMap.itemById} element={<span>Item by id</span>} />
       <Route path="*" element={<span>404</span>} />
     </Routes>
