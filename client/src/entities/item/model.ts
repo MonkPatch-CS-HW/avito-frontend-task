@@ -7,11 +7,11 @@ export enum ItemType {
 }
 
 export const baseItemSchema = z.object({
-  name: z.string().nonempty('Название не должно быть пустым'),
-  description: z.string().nonempty('Описание не должно быть пустым'),
-  location: z.string().nonempty('Расположение не должно быть пустым'),
-  type: z.string().nonempty('Тип не должен быть пустым'),
-  image: z.string().optional(),
+  name: z.string().describe('Название').nonempty('Название не должно быть пустым'),
+  description: z.string().describe('Описание').nonempty('Описание не должно быть пустым'),
+  location: z.string().describe('Расположение').nonempty('Расположение не должно быть пустым'),
+  type: z.string().describe('Тип').nonempty('Тип не должен быть пустым'),
+  image: z.string().describe('Картинка').optional(),
 })
 
 export type BaseItem = z.infer<typeof baseItemSchema>
