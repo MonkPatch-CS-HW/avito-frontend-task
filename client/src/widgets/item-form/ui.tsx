@@ -2,24 +2,66 @@ import { BaseItem, InputItem, ItemMeta } from '@/entities/item'
 import { EditItemGeneral } from '@/features/edit-item-general'
 import { EditItemSpecific } from '@/features/edit-item-specific'
 import { ViewOnChangeEvent, ViewProps } from '@/shared/ui'
+import { Button } from 'antd'
 import { useState } from 'react'
 
 export const ItemForm = <T extends InputItem>(props: ViewProps<T>) => {
   const [baseItemInfo, setBaseItemInfo] = useState<ViewOnChangeEvent<BaseItem>>({
     isValid: false,
-    data: props.data ?? {},
+    data: props.data ? { ...props.data } : {},
   })
   const [itemMetaInfo, setItemMetaInfo] = useState<ViewOnChangeEvent<ItemMeta<any>>>({
     isValid: false,
-    data: props.data ?? {},
+    data: props.data ? { ...props.data } : {},
   })
+  const [currentStep, setCurrentStep] = useState<'BASE' | 'META'>('BASE')
 
-  return (
-    <>
-      <EditItemGeneral data={baseItemInfo.data} onChange={setBaseItemInfo} />
-      {baseItemInfo.data.type && (
-        <EditItemSpecific<any> itemType={baseItemInfo.data.type} data={itemMetaInfo.data} onChange={setItemMetaInfo} />
-      )}
-    </>
-  )
+  const handleBaseItemChange = (e: ViewOnChangeEvent<BaseItem>) => {
+    setBaseItemInfo(e)
+    props.onChange?.({
+      data: { ...props.data, ...e.data, ...itemMetaInfo.data } as any,
+      isValid: baseItemInfo.isValid && itemMetaInfo.isValid,
+    })
+  }
+
+  const handleItemMetaChange = (e: ViewOnChangeEvent<BaseItem>) => {
+    setItemMetaInfo(e)
+    props.onChange?.({
+      data: { ...props.data, ...baseItemInfo.data, ...e.data } as any,
+      isValid: baseItemInfo.isValid && itemMetaInfo.isValid,
+    })
+  }
+
+  const Steps = {
+    BASE: (
+      <>
+        <EditItemGeneral data={baseItemInfo.data} onChange={handleBaseItemChange} />
+        <Button variant="solid" color="primary" disabled={!baseItemInfo.isValid} onClick={() => setCurrentStep('META')}>
+          Дальше
+        </Button>
+      </>
+    ),
+    META: (
+      <>
+        <EditItemSpecific<any>
+          itemType={baseItemInfo.data.type!}
+          data={itemMetaInfo.data}
+          onChange={handleItemMetaChange}
+        />
+        <Button
+          variant="solid"
+          color="primary"
+          disabled={!itemMetaInfo.isValid}
+          onClick={() => props.onChange?.({ ...baseItemInfo, ...itemMetaInfo })}
+        >
+          Завершить
+        </Button>
+        <Button variant="outlined" color="default" onClick={() => setCurrentStep('BASE')}>
+          Назад
+        </Button>
+      </>
+    ),
+  }
+
+  return Steps[currentStep]
 }
