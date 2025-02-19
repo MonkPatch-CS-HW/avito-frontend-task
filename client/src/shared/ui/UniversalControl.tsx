@@ -15,7 +15,7 @@ import {
 } from '@/shared/ui'
 
 export type PropertyDescription = {
-  description: string
+  description?: string
   requried?: boolean
 }
 

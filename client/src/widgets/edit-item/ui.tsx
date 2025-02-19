@@ -9,8 +9,7 @@ export const EditItem = () => {
       onSubmit={(data) => console.log(data)}
       onChange={(item, isValid) => console.log(item, isValid)}
     >
-      <ItemForm.Controls general />
-      <ItemForm.Controls categorial />
+      <ItemForm.Controls />
       <Input type="submit" />
     </ItemForm>
   )

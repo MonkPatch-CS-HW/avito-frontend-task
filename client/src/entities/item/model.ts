@@ -1,3 +1,4 @@
+import { compileFilter, Filter, invertFilter } from '@/shared/lib/filter'
 import { z } from 'zod'
 
 export enum ItemType {
@@ -51,3 +52,8 @@ export type InputItem = z.infer<typeof inputItemSchema>
 
 export const itemSchema = inputItemSchema.and(z.object({ id: z.number() }))
 export type Item = z.infer<typeof itemSchema>
+
+export const itemKeysFilter = {
+  general: compileFilter(Object.keys(baseItemSchema.shape)),
+  categorial: invertFilter(Object.keys(baseItemSchema.shape)),
+}
