@@ -14,7 +14,7 @@ import {
   FormField,
 } from '@/shared/ui'
 
-type PropertyDescription = {
+export type PropertyDescription = {
   description: string
   requried?: boolean
 }
@@ -62,7 +62,7 @@ const DefaultGenericSelect = <T extends FieldValues, P extends Path<T>>({
   </DefaultSelect>
 )
 
-type UniversalControlProps<T extends FieldValues, P extends Path<T>> = {
+export type UniversalControlProps<T extends FieldValues, P extends Path<T>> = {
   name: P
   type: 'text' | 'number' | 'select'
   values?: Record<string, ReactNode>

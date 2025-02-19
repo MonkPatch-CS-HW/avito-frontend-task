@@ -1,4 +1,5 @@
 export * from './ZodForm'
+export * from './UniversalControl'
 export * from './button'
 export * from './form'
 export * from './label'

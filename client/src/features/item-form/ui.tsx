@@ -1,7 +1,7 @@
-import { createContext, PropsWithChildren, useEffect } from 'react'
+import React, { createContext, PropsWithChildren, useEffect } from 'react'
 import { FormProvider, Path, SubmitHandler, useForm, useFormContext } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { InputItem, inputItemSchema, ItemType } from './model'
+import { InputItem, inputItemSchema, ItemType } from '@/entities/item'
 import {
   createGenericControl,
   GenericInputProps,
@@ -50,11 +50,15 @@ ItemForm.Controls = (props: ItemControlProps) => {
   const { watch } = useFormContext<Partial<InputItem>>()
   const { categorial = !props.general, general = !props.categorial } = props
 
-  const Control = createGenericControl<InputItem, Path<InputItem>>(
+  const GenericControl = createGenericControl<InputItem, Path<InputItem>>(
     props.renderLayout,
     props.renderInput,
     props.renderSelect,
   )
+
+  const Control: typeof GenericControl = (props) => {
+    return <GenericControl {...props} />
+  }
 
   const itemTypes = Object.fromEntries(Object.entries(ItemType).map(([, value]) => [value, value]))
   const itemType: ItemType | undefined = watch('type')
@@ -71,7 +75,7 @@ ItemForm.Controls = (props: ItemControlProps) => {
       )}
       {categorial && [
         itemType === ItemType.REAL_ESTATE && (
-          <>
+          <React.Fragment key={ItemType.REAL_ESTATE}>
             <Control
               name="propertyType"
               type="select"
@@ -81,18 +85,18 @@ ItemForm.Controls = (props: ItemControlProps) => {
             <Control name="area" type="number" description="Площадь" />
             <Control name="rooms" type="number" description="Количество комнат" />
             <Control name="price" type="number" description="Цена" />
-          </>
+          </React.Fragment>
         ),
         itemType === ItemType.AUTO && (
-          <>
+          <React.Fragment key={ItemType.AUTO}>
             <Control name="brand" description="Производитель" type="select" values={{ Lada: 'Lada', Audi: 'Audi' }} />
             <Control name="model" description="Модель" type="text" />
             <Control name="year" description="Год выпуска" type="number" />
             <Control name="mileage" description="Пробег" type="number" />
-          </>
+          </React.Fragment>
         ),
         itemType === ItemType.SERVICES && (
-          <>
+          <React.Fragment key={ItemType.SERVICES}>
             <Control
               name="serviceType"
               description="Тип услуги"
@@ -102,7 +106,7 @@ ItemForm.Controls = (props: ItemControlProps) => {
             <Control name="experience" description="Опыт работы" type="number" />
             <Control name="cost" description="Стоимость услуги" type="number" />
             <Control name="workSchedule" description="График работы" type="text" />
-          </>
+          </React.Fragment>
         ),
       ]}
     </>

@@ -1,5 +1,5 @@
 import { ItemType } from '@/entities/item'
-import { ItemForm } from '@/entities/item/ui'
+import { ItemForm } from '@/features/item-form/ui'
 import { Input } from '@/shared/ui'
 
 export const EditItem = () => {
