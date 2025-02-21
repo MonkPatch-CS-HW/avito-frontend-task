@@ -11,6 +11,7 @@ import {
 } from '@/shared/ui/UniversalControl'
 import { compileFilter, emptyFilter, Filter } from '@/shared/lib/filter'
 import { useTranslation } from 'react-i18next'
+import { Input } from '@/shared/ui'
 
 export const GenericControlContext =
   createContext<React.FC<UniversalControlProps<InputItem, Path<InputItem>>>>(createGenericControl())
@@ -28,9 +29,9 @@ export const ItemForm = ({
   renderInput,
   renderSelect,
 }: PropsWithChildren<{
-  item: Partial<InputItem>
+  item?: Partial<InputItem>
   onSubmit?: SubmitHandler<InputItem>
-  onChange?: (item: Partial<InputItem>, isValid: boolean) => void
+  onChange?: (item: Partial<InputItem>) => void
   renderLayout?: React.FC<GenericLayoutProps>
   renderInput?: React.FC<GenericInputProps<Partial<InputItem>, Path<InputItem>>>
   renderSelect?: React.FC<GenericSelectProps<Partial<InputItem>, Path<InputItem>>>
@@ -40,7 +41,7 @@ export const ItemForm = ({
     if (!onChange) return
 
     const { unsubscribe } = methods.watch((value) => {
-      onChange(value, methods.formState.isValid)
+      onChange(value)
     })
     return unsubscribe
   }, [methods])
@@ -104,4 +105,8 @@ ItemForm.Controls = ({ filter = emptyFilter }: ItemControlProps) => {
       ]}
     </>
   )
+}
+
+ItemForm.Submit = ({ value }: { value: string }) => {
+  return <Input type="submit" value={value} />
 }

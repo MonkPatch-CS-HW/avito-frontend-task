@@ -4,6 +4,10 @@ import { initReactI18next } from 'react-i18next'
 const resources = {
   ru: {
     translation: {
+      page: {
+        form: { label: 'Создать', description: 'Создать или отредактировать объявление' },
+        list: { label: 'Список', description: 'Список объявлений' },
+      },
       model: {
         item: {
           name: { description: 'Название' },

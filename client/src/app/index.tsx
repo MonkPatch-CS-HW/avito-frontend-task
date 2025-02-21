@@ -5,13 +5,16 @@ import { BrowserRouter } from 'react-router-dom'
 import { Router } from './router'
 import { store } from './store'
 import './i18n.ts'
+import { Layout } from '@/widgets/layout'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <>
     <React.StrictMode>
       <ReduxProvider store={store}>
         <BrowserRouter>
-          <Router />
+          <Layout>
+            <Router />
+          </Layout>
         </BrowserRouter>
       </ReduxProvider>
     </React.StrictMode>

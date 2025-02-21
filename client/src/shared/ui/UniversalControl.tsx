@@ -35,7 +35,7 @@ export type GenericInputProps<T extends FieldValues, P extends Path<T>> = Render
 const DefaultGenericInput = <T extends FieldValues, P extends Path<T>>({
   value,
   ...field
-}: GenericInputProps<T, P>) => <DefaultInput {...field} defaultValue={value} />
+}: GenericInputProps<T, P>) => <DefaultInput {...field} defaultValue={value ?? ''} />
 
 export type GenericSelectProps<T extends FieldValues, P extends Path<T>> = RenderProps<T, P> & {
   values?: Record<string, ReactNode>
@@ -45,7 +45,7 @@ const DefaultGenericSelect = <T extends FieldValues, P extends Path<T>>({
   value,
   onChange,
 }: GenericSelectProps<T, P>) => (
-  <DefaultSelect defaultValue={value} onValueChange={onChange}>
+  <DefaultSelect defaultValue={value ?? ''} onValueChange={onChange}>
     <SelectTrigger>
       <SelectValue />
     </SelectTrigger>
